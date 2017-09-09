@@ -1,21 +1,37 @@
 const path = require('path');
+const http = require('http');
 const express = require('express'); //requires express module
 const socketIO = require('socket.io');
 
-const app = express(); //initiates express in app variable
-const publicPath = path.join(__dirname ,'../public');
-const port = process.env.PORT || 3000;
-var server = http.createServer(app);
-var io= socketIO(server);
 
-io.on('connection',(socket)=>{
-  socket.on('disconnect',()=>{
-    console.log('new user connected');
-  })
+const publicPath = path.join(__dirname, '../public');
+
+const port = process.env.PORT || 3000;
+const app = express(); //initiates express in app variable
+var server = http.createServer(app);
+var io = socketIO(server);
+app.use(express.static(publicPath));
+
+io.on('connection', (socket) => {
+  console.log('New user connected');
+
+  socket.on('disconnect', () => {
+    console.log('User was disconnected');
+  });
+
+socket.emit('newMessage',{
+  from:'GooshGoosh man',
+  text: 'Goosh Goosh',
+  createAt:Date.now()
 });
-app.use(express.static(publicPath))
-app.listen(port,()=>{
+
+socket.on('createMessage',(message)=>{
+  console.log('message received',message);
+})
+
+
+});
+
+server.listen(port,()=>{
   console.log(`we up on port: ${port}`);
 })
-console.log(__dirname + '/../public');
-console.log(publicPath);
