@@ -5,10 +5,7 @@ socket.on('connect',function(){
 
 
 
-socket.emit('createMessage',{
-  text:'Hey there',
-  from:'Goosh Goosh Girl'
-})
+
 
 });
 
