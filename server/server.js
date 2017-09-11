@@ -3,6 +3,8 @@ const http = require('http'); //adds http module
 const express = require('express'); //adds express module
 const socketIO = require('socket.io');//adds socket.io
 
+const {generateMessage} = require('./utils/message.js');
+
 
 const publicPath = path.join(__dirname, '../public');
 
@@ -23,26 +25,16 @@ io.on('connection', (socket) => {
 
 
 //Greeting message to new user
-socket.emit('newMessage',{
-  from:'Admin',
-  text:'Welcome to the Goosh Goosh Chat ',
-  createdAt: new Date().getTime()
-});
+socket.emit('newMessage',generateMessage('Admin','Welcome to the Goosh Goosh Chat ')
+
+);
 
 //Sends message from Server alerting Users of new person
-socket.broadcast.emit('newMessage',{
-  from:'Admin',
-  text:'New User has joined the Chat. Goosh Goosh!',
-  createdAt: new Date().getTime()
-})
+socket.broadcast.emit('newMessage',generateMessage('Admin','New User has joined the Chat. Goosh Goosh!'))
 
 socket.on('createMessage',(message)=>{
   console.log('message received',message);
-  io.emit('newMessage',{
-    from:message.from,
-    text:message.text,
-    createdAt: new Date().getTime()
-  });
+  io.emit('newMessage',generateMessage(message.from,message.text));
   // socket.broadcast.emit('newMessage',{
   //   from:message.from,
   //   text:message.text,
