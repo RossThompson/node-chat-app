@@ -32,9 +32,10 @@ socket.emit('newMessage',generateMessage('Admin','Welcome to the Goosh Goosh Cha
 //Sends message from Server alerting Users of new person
 socket.broadcast.emit('newMessage',generateMessage('Admin','New User has joined the Chat. Goosh Goosh!'))
 
-socket.on('createMessage',(message)=>{
+socket.on('createMessage',(message,callback)=>{
   console.log('message received',message);
   io.emit('newMessage',generateMessage(message.from,message.text));
+  callback('This is from the server');
   // socket.broadcast.emit('newMessage',{
   //   from:message.from,
   //   text:message.text,
