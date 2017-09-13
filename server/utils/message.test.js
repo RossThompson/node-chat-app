@@ -1,3 +1,4 @@
+//const moment = require('moment');
 var expect = require('expect');
 
 var {generateMessage,generateLocationMessage} =  require('./message');
