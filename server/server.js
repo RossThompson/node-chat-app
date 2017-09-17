@@ -35,9 +35,13 @@ io.on('connection', (socket) => {
 
 
 socket.on('join',(params,callback)=>{
+  //checks if Username and roomname are strings
     if(!isRealString(params.name) || !isRealString(params.room))
     {
+
       return callback('Name and room name are required')
+    }else if (users.getUserList(params.room).find((username)=>username == params.name)){ // checks if username is taken
+      return callback('Name Taken')
     }
 
 
